@@ -62,7 +62,12 @@ merged_df['week_from_start'] = ((merged_df['actual_date'] - START_DATE).dt.days 
 # ==========================================
 # 3. Assessment Data Processing
 # ==========================================
-aca = pd.read_csv(f"{BASE_PATH}/sorted_ass.csv")
+df_ass = pd.read_csv(f"{BASE_PATH}/assessments.csv")
+df_stuass = pd.read_csv(f"{BASE_PATH}/studentAssessment.csv")
+ass_stuass = df_stuass.merge(df_ass , on="id_assessment" , how="outer")
+aca = ass_stuass.sort_values(by= ['id_student' , 'id_assessment'] , ascending=True)
+aca.set_index('id_student' , inplace=True)
+aca.dropna(subset=['date_submitted'] , inplace=True)
 
 # Encode modules
 aca['code_module - code_presentation'] = label_cmcp.transform(aca['code_module - code_presentation'])
