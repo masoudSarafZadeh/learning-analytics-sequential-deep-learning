@@ -1,10 +1,12 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import pandas as pd
 import pytorch_lightning as pl
 from torch.nn.utils.rnn import pack_padded_sequence
 from torchmetrics.functional import accuracy
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from pytorch_lightning.callbacks import ModelCheckpoint, TQDMProgressBar
 from pytorch_lightning.loggers import TensorBoardLogger
 
@@ -83,7 +85,6 @@ class OULADPredictor(pl.LightningModule):
 # ==========================================
 if __name__ == "__main__":
     from preprocess import df_info_filtered, final_filtered
-    from sklearn.model_selection import train_test_split
     
     print("Splitting data and generating sequences...")
     
@@ -95,14 +96,27 @@ if __name__ == "__main__":
     val_list = val_df['id_student'].unique().tolist()
     test_list = test_df['id_student'].unique().tolist()
 
-    all_train = final_filtered[final_filtered['id_student'].isin(train_list)]
-    all_val = final_filtered[final_filtered['id_student'].isin(val_list)]
-    all_test = final_filtered[final_filtered['id_student'].isin(test_list)]
+    all_train = final_filtered[final_filtered['id_student'].isin(train_list)].copy()
+    all_val = final_filtered[final_filtered['id_student'].isin(val_list)].copy()
+    all_test = final_filtered[final_filtered['id_student'].isin(test_list)].copy()
+
+    print("Scaling features...")
+    exclude_cols = ['id_student', 'week_from_start', 'final_result']
+    cols_to_scale = [c for c in all_train.columns if c not in exclude_cols]
+    scaler = StandardScaler()
+    scaler.fit(all_train[cols_to_scale])
+    all_train[cols_to_scale] = scaler.transform(all_train[cols_to_scale])
+    all_val[cols_to_scale] = scaler.transform(all_val[cols_to_scale])
+    all_test[cols_to_scale] = scaler.transform(all_test[cols_to_scale])
+
+    all_train = all_train.fillna(-10.0)
+    all_val = all_val.fillna(-10.0)
+    all_test = all_test.fillna(-10.0)
 
     # 3. Feature Definitions
     FEATURE_COLUMNS = all_train.columns.tolist()[1:-1]
     SPARSE_FEATURE_NAMES = ['score_CMA', 'score_TMA']
-    MISSING_VALUE_PLACEHOLDER = 0.0
+    MISSING_VALUE_PLACEHOLDER = -10.0
 
     NUM_DAILY_FEATURES = len([f for f in FEATURE_COLUMNS if f not in SPARSE_FEATURE_NAMES])
     NUM_SPARSE_FEATURES = len(SPARSE_FEATURE_NAMES)
