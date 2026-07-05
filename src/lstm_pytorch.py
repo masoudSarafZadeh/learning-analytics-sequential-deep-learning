@@ -109,14 +109,15 @@ if __name__ == "__main__":
     all_val[cols_to_scale] = scaler.transform(all_val[cols_to_scale])
     all_test[cols_to_scale] = scaler.transform(all_test[cols_to_scale])
 
-    all_train = all_train.fillna(-10.0)
-    all_val = all_val.fillna(-10.0)
-    all_test = all_test.fillna(-10.0)
+    all_train = all_train.fillna(0.0)
+    all_val = all_val.fillna(0.0)
+    all_test = all_test.fillna(0.0)
 
     # 3. Feature Definitions
     FEATURE_COLUMNS = all_train.columns.tolist()[1:-1]
     SPARSE_FEATURE_NAMES = ['score_CMA', 'score_TMA']
-    MISSING_VALUE_PLACEHOLDER = -10.0
+
+    MISSING_VALUE_PLACEHOLDER = 0.0
 
     NUM_DAILY_FEATURES = len([f for f in FEATURE_COLUMNS if f not in SPARSE_FEATURE_NAMES])
     NUM_SPARSE_FEATURES = len(SPARSE_FEATURE_NAMES)
