@@ -46,8 +46,8 @@ def custom_collate_fn(batch):
     
     sorted_sequences = [sequences[i] for i in sorted_indices]
     sorted_labels = torch.stack([labels[i] for i in sorted_indices])
-    
-    padded_sequences = nn.utils.rnn.pad_sequence(sorted_sequences, batch_first=True, padding_value=-1.0)
+
+    padded_sequences = nn.utils.rnn.pad_sequence(sorted_sequences, batch_first=True, padding_value=0.0)
 
     return {
         'sequence': padded_sequences,
