@@ -47,7 +47,7 @@ This script demonstrates a **Semi-Supervised Composite Autoencoder** applied to 
 
 2.  Predict the final student outcome (Binary Crossentropy Loss).
 
-**Note for Reproduction:** To replicate the complete methodology detailed in our upcoming paper, this exact autoencoder pipeline must be applied independently to the two remaining domains: **VLE clickstreams** and **Demographics**. The resulting 2-dimensional embeddings from all three streams are then concatenated and passed into a final **Metamodel Ensemble** for the ultimate prediction.
+**Note for Reproduction:** This repository provides the foundational implementation of our multi-stream composite autoencoder framework, demonstrated here on the Assessment data stream. The architecture is designed to be fully modular and symmetrically scales to companion domains (such as VLE clickstreams and Demographics). By compressing sequential features into a strict 2-dimensional bottleneck, the network isolates domain-specific latent representations. These dense, low-dimensional embeddings are structured to be concatenated for downstream fusion in a metamodel ensemble, maximizing predictive robustness while preventing overfitting.
 
 ### Bidirectional Transformer / BERT (`BERT_style.py`)
 Currently marked for post-submission development. Future updates will introduce a Bidirectional Encoder Representations from Transformers (BERT) style architecture. This approach will utilize Masked Language Modeling (MLM) on student timelines, a dedicated `[CLS]` token for classification, and custom attention mechanisms designed specifically to maximize the interpretability of educational sequences.
