@@ -26,7 +26,7 @@ vle_stu.drop(columns=['Unnamed: 0', 'code_module', 'code_presentation', 'id_site
 vle_stu.dropna(subset=['id_student'], inplace=True)
 
 # Encode modules
-label_cmcp = joblib.load('preprocess/label_encoder.joblib')
+label_cmcp = joblib.load('processed_data/label_encoder.joblib')
 vle_stu['code_module - code_presentation'] = label_cmcp.transform(vle_stu['code_module - code_presentation'])
 vle_stu['id_student'] = (vle_stu['id_student'] + (vle_stu['code_module - code_presentation'] / 100)) * 100
 vle_stu.drop(columns=['code_module - code_presentation'], inplace=True)
@@ -105,7 +105,7 @@ merged_vle_aca.sort_values(by=['id_student', 'week_from_start'], inplace=True)
 # ==========================================
 df_info = pd.read_csv(f"{INFO_PATH}/studentInfo.csv")
 df_reg = pd.read_csv(f"{INFO_PATH}/studentRegistration.csv")
-df_all = pd.read_csv("preprocess/df_all.csv")
+df_all = pd.read_csv("processed_data/df_all.csv")
 
 df_info['code_module - code_presentation'] = df_info[['code_module', 'code_presentation']].agg(' - '.join, axis=1)
 df_info['code_module - code_presentation'] = label_cmcp.transform(df_info['code_module - code_presentation'])
