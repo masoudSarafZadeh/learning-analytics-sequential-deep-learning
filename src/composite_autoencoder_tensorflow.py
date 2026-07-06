@@ -20,7 +20,7 @@ ass_stuass = df_stuass.merge(df_ass, on="id_assessment", how="outer")
 
 # Sort and encode
 aca = ass_stuass.sort_values(by=['id_student', 'id_assessment'], ascending=True)
-label_cmcp = joblib.load('preprocess/label_encoder.joblib')
+label_cmcp = joblib.load('processed_data/label_encoder.joblib')
 aca['code_module - code_presentation'] = label_cmcp.transform(aca['code_module - code_presentation'])
 
 # Create unique student IDs based on module presentation
@@ -42,7 +42,7 @@ aca = aca.sort_values(by=['id_student', 'date'])
 # ==========================================
 # 2. Train / Val / Test Split BEFORE Scaling
 # ==========================================
-df_all = pd.read_csv("preprocess/df_all.csv")
+df_all = pd.read_csv("processed_data/df_all.csv")
 unique_students = df_all['id_student'].unique()
 
 train_val_ids, test_ids = train_test_split(unique_students, test_size=0.15, random_state=42)
