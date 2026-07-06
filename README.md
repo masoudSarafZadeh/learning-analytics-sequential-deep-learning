@@ -20,7 +20,7 @@ The project leverages both PyTorch and TensorFlow to process multi-modal sequent
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/yourusername/learning-analytics-sequential-deep-learning.git](https://github.com/yourusername/learning-analytics-sequential-deep-learning.git)
+   git clone https://github.com/yourusername/learning-analytics-sequential-deep-learning.git
    cd learning-analytics-sequential-deep-learning
    ```
 2. **Install dependencies:**
@@ -51,7 +51,7 @@ This script demonstrates a **Semi-Supervised Composite Autoencoder** applied to 
 
 ### Bidirectional Transformer / BERT (`BERT_style.py`)
 Currently marked for post-submission development. Future updates will introduce a Bidirectional Encoder Representations from Transformers (BERT) style architecture. This approach will utilize Masked Language Modeling (MLM) on student timelines, a dedicated `[CLS]` token for classification, and custom attention mechanisms designed specifically to maximize the interpretability of educational sequences.
----
+
 
 ## License
 This project is licensed under the Apache License 2.0 - see the LICENSE file for details.
